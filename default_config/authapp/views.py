@@ -1,0 +1,3 @@
+"""
+authapp views.py
+"""
