@@ -37,8 +37,14 @@ def read_summary(folder_path):
 
 # print(read_summary(input('Укажите папку, которую хотите сканировать:\n>>> ')))  # запрос пути к папке
 try:
-    paths = input('Укажите папку, которую хотите сканировать:\n>>> ')  # запрос пути к папке
-    print(read_summary(paths))                                         # вывод результата
+    paths = input('Укажите папку, которую хотите сканировать:\n>>> ')   # запрос пути к папке
+    summary = read_summary(paths)                                       # построение словаря
+    sorted_keys = sorted(summary)                                       # сортировка ключей словаря в список
+    shift = len(str(sorted_keys[-1]))                                   # получение длины максимального ключа
+    print('{')
+    for key in sorted_keys:                                             # проход по сортированным ключам
+        print(f'{key:>{shift}}KB: {summary[key]}')                            # вывод строки с выравниванием ключа
+    print('}')
 except FileNotFoundError as error:                  # если происходит попытка прочитать несуществующую папку
     print(f'Указанного пути не существует: {error}')    # выводим содержимое ошибки
 except Exception as error:                          # для остальных ошибок
