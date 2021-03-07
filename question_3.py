@@ -3,7 +3,7 @@ r"""
     исходные файлы необходимо оставить
 """
 from os import walk, makedirs, getcwd
-from os.path import join, relpath, getsize, exists
+from os.path import join, relpath, getsize, exists, isdir
 from os.path import split as path_split
 from shutil import copy2
 
@@ -53,14 +53,16 @@ def read_starter(path):
                 config[1].append(_file_path[:])                # добавляем в список файлов путь к файлу и его содержимое
     # print(*config[0], sep='\n')   # вывод списка папок
     # print(*config[1], sep='\n')   # вывод списка путей к файлам
+    print('Чтение папки завершено.')
     return config  # возвращаем результат работы
 
 
 def copy_templates(path):
     """Собрать стартер из файла конфигурации ('откуда читаем', 'где создаем', 'имя проекта')"""
-    if not exists(path):                                # если целевой папки не существует
+    if not exists(path) or not isdir(path):                                # если целевой папки не существует
         raise FileNotFoundError(f'{path} not found')        # поднимаем ошибку
     folders, files = read_starter(path)                 # собираем список папок и файлов из прочитанного в стартере
+    print("Создаю иерархию")
     for folder in folders:                              # проходим по списку папок
         folder = join(path, *folder[folder.index('templates'):])  # собираем путь в кучу отбросив всё что до 'template'
         makedirs(folder)                                    # создаём путь
